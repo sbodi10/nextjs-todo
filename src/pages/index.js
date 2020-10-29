@@ -4,11 +4,18 @@ import Head from 'next/head';
 // const TodoItem = dynamic(() => import('../components/TodoItem'));
 
 export function TodoItem(props) {
-  const { todo } = props;
+  const { todo, onClick } = props;
+
+  function handleClick(e) {
+    if (onClick) {
+      onClick(e, todo);
+    }
+  }
+
   return (
     <>
-      <input type='checkbox' className='checkbox' />
-      <h3>{todo.todo || ''}</h3>
+      <input type='checkbox' className='checkbox' onChange={handleClick} checked={todo.checked} />
+      <h3 style={todo.checked ? { textDecoration: 'line-through', opacity: 0.5 } : null}>{todo.todo || ''}</h3>
       <style jsx>{`
         .checkbox {
           margin-right: 18px;
@@ -22,14 +29,20 @@ export default function Home() {
 
   const [todos, setTodos] = useState([
     {
-      id: '1',
-      todo: 'Find in-depth information about Next.js features and API.'
+      id: '123',
+      todo: 'Find in-depth information about Next.js features and API.',
+      checked: false
     },
     {
-      id: '2',
-      todo: 'Learn about Next.js in an interactive course with quizzes!'
+      id: '246',
+      todo: 'Learn about Next.js in an interactive course with quizzes!',
+      checked: false
     }
   ]);
+
+  function toggleTodo(e, todo) {
+    setTodos(todos.map(item => item.id === todo.id ? { ...todo, checked: !todo.checked } : item));
+  }
 
   return (
     <div className="container">
@@ -43,7 +56,7 @@ export default function Home() {
         <div className="grid">
           {todos && todos.length ? todos.map(todo => (
             <div className="card" key={todo.id}>
-              <TodoItem todo={todo} />
+              <TodoItem todo={todo} onClick={toggleTodo} key={`item-${todo.id}`} />
             </div>
           )) : null}
         </div>
