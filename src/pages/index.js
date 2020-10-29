@@ -1,18 +1,33 @@
 import { useState } from 'react';
 import Head from 'next/head';
+// import dynamic from 'next/dynamic';
+// const TodoItem = dynamic(() => import('../components/TodoItem'));
+
+export function TodoItem(props) {
+  const { todo } = props;
+  return (
+    <>
+      <input type='checkbox' className='checkbox' />
+      <h3>{todo.todo || ''}</h3>
+      <style jsx>{`
+        .checkbox {
+          margin-right: 18px;
+        }
+      `}</style>
+    </>
+  );
+}
 
 export default function Home() {
 
   const [todos, setTodos] = useState([
     {
       id: '1',
-      title: 'Documentation',
-      description: 'Find in-depth information about Next.js features and API.'
+      todo: 'Find in-depth information about Next.js features and API.'
     },
     {
       id: '2',
-      title: 'Learn',
-      description: 'Learn about Next.js in an interactive course with quizzes!'
+      todo: 'Learn about Next.js in an interactive course with quizzes!'
     }
   ]);
 
@@ -28,9 +43,7 @@ export default function Home() {
         <div className="grid">
           {todos && todos.length ? todos.map(todo => (
             <div className="card" key={todo.id}>
-              <input type='checkbox' />
-              <h3>{todo.title}</h3>
-              <p>{todo.description}</p>
+              <TodoItem todo={todo} />
             </div>
           )) : null}
         </div>
@@ -137,10 +150,11 @@ export default function Home() {
         }
 
         .card {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
           margin: 1rem;
-          flex-basis: 45%;
           padding: 1.5rem;
-          text-align: left;
           color: inherit;
           text-decoration: none;
           border: 1px solid #eaeaea;
