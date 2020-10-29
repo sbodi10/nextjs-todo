@@ -5,10 +5,12 @@ export default function Home() {
 
   const [todos, setTodos] = useState([
     {
+      id: '1',
       title: 'Documentation',
       description: 'Find in-depth information about Next.js features and API.'
     },
     {
+      id: '2',
       title: 'Learn',
       description: 'Learn about Next.js in an interactive course with quizzes!'
     }
@@ -25,7 +27,7 @@ export default function Home() {
         <h1 className="title">Welcome to ToDo!</h1>
         <div className="grid">
           {todos && todos.length ? todos.map(todo => (
-            <div className="card">
+            <div className="card" key={todo.id}>
               <input type='checkbox' />
               <h3>{todo.title}</h3>
               <p>{todo.description}</p>
